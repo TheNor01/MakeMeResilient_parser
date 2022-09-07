@@ -213,7 +213,7 @@ public class ContractDiscovery {
             cu.getResult().get().findAll(ClassOrInterfaceDeclaration.class).forEach(c -> {
                 NodeList<ClassOrInterfaceType> interfaceTypes = c.getExtendedTypes();
                 if(interfaceTypes.size() == 0) return;
-                if(interfaceTypes.get(0).toString().equals("Remote")){
+                if(interfaceTypes.get(0).toString().contains("Remote")){
                     Optional<String> qualifiedName = c.getFullyQualifiedName();
                     qualifiedName.ifPresent(s -> interfaceToLookup.add(s.toString()));
                 }
