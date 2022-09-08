@@ -112,9 +112,14 @@ public class ContractDiscovery {
                     .filter(ae -> ae.isCastExpr() || ae.isAssignExpr())
                     .collect(Collectors.toList());
 
+            HashMap<Expression,Boolean> validExp = new HashMap<Expression,Boolean>();
             for(Expression exp: exps){
+                validExp.put(exp,Boolean.TRUE);
+            }
+            for(Expression exp: exps){
+                if(validExp.get(exp)==Boolean.FALSE) continue;
                 //remove the related common expression cause an assignment expression could be seen two times.
-                if (CheckForCommonExpression(exps, exp)) continue;
+                if (CheckForCommonExpression(exps, exp,validExp)) continue;
                 //continue with the remaining logic
                 String expType;
                         try{
@@ -184,12 +189,13 @@ public class ContractDiscovery {
         }
     }
 
-    private static boolean CheckForCommonExpression(List<Expression> exps, Expression exp) {
+    private static boolean CheckForCommonExpression(List<Expression> exps, Expression exp,HashMap<Expression,Boolean> validExp) {
         if(exp.isAssignExpr()){
             AssignExpr ae = (AssignExpr) exp;
             int valueIndex = exps.indexOf(ae.getValue());
             if(valueIndex != -1)
-                exps.remove(valueIndex);
+                //exps.remove(valueIndex);
+                validExp.replace(ae,Boolean.FALSE);
         }
         else{ //common expression -> cast expression
              if(exps.stream().filter(e -> e.isAssignExpr()).map(e -> (AssignExpr)e).anyMatch(e -> e.getValue().equals(exp)))
