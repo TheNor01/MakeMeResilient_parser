@@ -206,9 +206,11 @@ public class ContractDiscovery {
 
     private static void GetLinesUsage(List<Integer> lines, Optional<CompilationUnit> localCu, Expression target) {
         localCu.get().findAll(MethodCallExpr.class).forEach(e -> {
-            if(e.getScope().get().equals(target)) {
-                System.out.println("need to be changed:"+e.toString());
-                lines.add(e.getRange().get().begin.line);
+            if(e.getScope().isPresent()) {
+                if (e.getScope().get().equals(target)) {
+                    System.out.println("need to be changed:" + e.toString());
+                    lines.add(e.getRange().get().begin.line);
+                }
             }
         });
     }
