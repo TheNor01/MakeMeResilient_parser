@@ -1,8 +1,3 @@
-import dev.failsafe.Failsafe;
-import dev.failsafe.RetryPolicy;
-
-
-
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -18,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-//TO DO -> Move into other project
+
 
 public class PomInject {
 
